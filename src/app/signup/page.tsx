@@ -1,19 +1,34 @@
 "use client";
 // ! "use client" Convert any component into client component now using "use client" you can access your window object,useEffect,useState etc
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { axios } from "axios";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function SignupPage() {
+  const router = useRouter();
   const [user, setUser] = React.useState({
     email: "",
     password: "",
     username: "",
   });
+  const [buttonDisabled, setButtonDisabled] = React.useState(false);
+
+  useEffect(() => {
+    if (
+      user.email.length > 0 &&
+      user.password.length > 0 &&
+      user.username.length > 0
+    ) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [user]);
 
   const onSignup = async () => {
-    //
+    toast.success("Sign up sucess")
   };
   return (
     <section>
@@ -108,16 +123,16 @@ export default function SignupPage() {
                   <path d="M20.283 10.356h-8.327v3.451h4.792c-.446 2.193-2.313 3.453-4.792 3.453a5.27 5.27 0 0 1-5.279-5.28 5.27 5.27 0 0 1 5.279-5.279c1.259 0 2.397.447 3.29 1.178l2.6-2.599c-1.584-1.381-3.615-2.233-5.89-2.233a8.908 8.908 0 0 0-8.934 8.934 8.907 8.907 0 0 0 8.934 8.934c4.467 0 8.529-3.249 8.529-8.934 0-.528-.081-1.097-.202-1.625z"></path>
                 </svg>
               </span>
-              Sign up
+              {buttonDisabled ? "No Sign up" : "Sign up"}
             </button>
           </div>
-          <br/>
+          <br />
           <Link href="/login"> Visit Login Page </Link>
-          <br/>
+          <br />
           <p className="text-white"> {JSON.stringify(user)}</p>
         </div>
       </div>
-     
+      <Toaster/>
     </section>
   );
 }
