@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { axios } from "axios";
+import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 
 export default function SignupPage() {
@@ -28,10 +28,17 @@ export default function SignupPage() {
   }, [user]);
 
   const onSignup = async () => {
-    toast.success("Sign up sucess")
+    try {
+      const response = await axios.post("/api/users/signup", user);
+      console.log("Response", response.data);
+      router.push("/login");
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
   return (
     <section>
+      <Toaster />
       <div className="flex items-center justify-center  bg-slate-900 px-4 py-10 sm:px-6 sm:py-16 lg:px-8 lg:py-24">
         <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md">
           <h2 className="text-center text-2xl font-bold leading-tight text-white">
@@ -50,7 +57,7 @@ export default function SignupPage() {
                 </label>
                 <div className="mt-2">
                   <input
-                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 text-white"
                     type="text"
                     placeholder="User Name"
                     value={user.username}
@@ -71,7 +78,7 @@ export default function SignupPage() {
                 </label>
                 <div className="mt-2">
                   <input
-                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 text-white"
                     type="email"
                     placeholder="Email"
                     value={user.email}
@@ -94,7 +101,7 @@ export default function SignupPage() {
                 </div>
                 <div className="mt-2">
                   <input
-                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 text-white"
                     type="password"
                     placeholder="Password"
                     value={user.password}
@@ -132,7 +139,6 @@ export default function SignupPage() {
           <p className="text-white"> {JSON.stringify(user)}</p>
         </div>
       </div>
-      <Toaster/>
     </section>
   );
 }
