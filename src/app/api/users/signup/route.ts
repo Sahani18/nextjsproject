@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
     const { username, email, password } = reqBody;
     console.log(reqBody);
-    // check if user exist
+    //! check if user exist
     const user = await User.findOne({ email });
     if (user) {
       return NextResponse.json(
@@ -19,11 +19,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // hash password
+    //! hash password
 
     const salt = await bcyptjs.genSalt(10);
     const hashedPwd = await bcyptjs.hash(password, salt);
-    // save user to db
+    //! save user to db
 
     const newUser = new User({
       username,
